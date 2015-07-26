@@ -1,0 +1,31 @@
+
+#Practical machine learning: Course Project
+
+## Introduction
+This work is devoted to the description of classifier construction which can be used for the recognition of person's activity. In this work I shall try two approaches: decision tree and random forest. These approaches will be compared by the 5-fold crossvalidation
+
+## Variable selection
+I choose a set of variables, which are not "NA" for the test set. They are roll_dumbbell, pitch_dumbbell, yaw_dumbbell, gyros_arm_x, gyros_arm_y, gyros_arm_z, accel_arm_x, accel_arm_y, accel_arm_z, magnet_arm_x, magnet_arm_y, magnet_arm_z, total_accel_arm, roll_arm, pitch_arm, yaw_arm, magnet_belt_x, magnet_belt_y, magnet_belt_z, accel_belt_x , accel_belt_y, accel_belt_z, gyros_belt_x, gyros_belt_y, gyros_belt_z, total_accel_belt, yaw_belt, pitch_belt, roll_belt, num_window,  new_window and user_name.
+
+## Calculations
+
+First I load the training dataset and train classifiers partitioning into 5 pieces:
+
+``` {r echo=TRUE}
+
+pml.training <- read.csv("C:/Users/admin/Downloads/pml-training.csv")
+set.seed(1234321)
+library(caret)
+ctrl <- trainControl(method = "cv", number = 5)
+
+predictor_rpart <- train(classe ~ roll_dumbbell + pitch_dumbbell + yaw_dumbbell + gyros_arm_x + gyros_arm_y + gyros_arm_z + accel_arm_x + accel_arm_y + accel_arm_z + magnet_arm_x + magnet_arm_y + magnet_arm_z + total_accel_arm + roll_arm + pitch_arm+yaw_arm+ magnet_belt_x + magnet_belt_y + magnet_belt_z + accel_belt_x + accel_belt_y + accel_belt_z + gyros_belt_x + gyros_belt_y + gyros_belt_z + total_accel_belt + yaw_belt + pitch_belt + roll_belt + num_window +  new_window + user_name, data =pml.training, method ="rpart", trControl=ctrl)
+
+predictor_rf <- train(classe ~ roll_dumbbell + pitch_dumbbell + yaw_dumbbell + gyros_arm_x + gyros_arm_y + gyros_arm_z + accel_arm_x + accel_arm_y + accel_arm_z + magnet_arm_x + magnet_arm_y + magnet_arm_z + total_accel_arm + roll_arm + pitch_arm+yaw_arm+ magnet_belt_x + magnet_belt_y + magnet_belt_z + accel_belt_x + accel_belt_y + accel_belt_z + gyros_belt_x + gyros_belt_y + gyros_belt_z + total_accel_belt + yaw_belt + pitch_belt + roll_belt + num_window +  new_window + user_name, data =pml.training, method ="rf", trControl=ctrl)
+
+predictor_rpart
+predictor_rf
+```
+
+#Conclusion
+THe most accurate classifier is the classifier based on random forest approach
+
